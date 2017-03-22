@@ -1,5 +1,5 @@
 .c-layers {
-  transition: height 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: height 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &:before {
     content: '';
@@ -19,7 +19,7 @@
   overflow-y: hidden;
   padding: 0 $base-spacing-unit-large;
   position: relative;
-  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), background-color .2s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), height 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   width: 780px;
 
   @for $index from 1 through 10 {
@@ -29,7 +29,7 @@
     }
   }
 
-  &:hover {
+  &:hover:not(.c-layer--selected) {
     border-color: $color-theme-lighter2;
     color: $color-theme-lighter2;
   }
@@ -37,16 +37,9 @@
 
 .c-layer--selected {
   background-color: $color-theme-lighter5;
+  border-bottom: 1px solid $color-theme;
   border-color: $color-theme;
-
-  &:hover {
-    border-color: $color-grey;
-    color: $color-font-black;
-  }
-}
-
-.c-layer--expanded {
-  height: auto;
+  border-right: 1px solid $color-theme;
 }
 
 .c-layer--hide {
@@ -58,7 +51,7 @@
 
   opacity: 0;
   padding: $base-spacing-unit-large $base-spacing-unit-large;
-  transition: opacity 0.2s, visibility 0s linear 0.25s;
+  transition: opacity 0.3s, visibility 0s linear 0.35s;
   visibility: hidden;
 
   @at-root .c-layer--selected > & {

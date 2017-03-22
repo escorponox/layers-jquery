@@ -1,4 +1,4 @@
-export default (layer, endHeight, duration) => {
+export default (layer, endHeight, duration) => new Promise((resolve, reject) => {
   let start = null;
   const initHeight = layer.offsetHeight;
   layer.classList.remove('c-layer--selected');
@@ -17,15 +17,14 @@ export default (layer, endHeight, duration) => {
 
   // easeOutCubic - George McGinley Smith - https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
   function easing(t, b, c, d) {
-    const ts =(t/=d)*t;
-    const tc =ts*t;
-    return b+c*(tc + -3*ts + 3*t);
+    return c * ((t = t / d - 1) * t * t + 1) + b;
   }
 
   function endAnimation() {
     layer.classList.remove('c-layer--expanded');
     layer.removeAttribute('style');
+    resolve(layer);
   }
 
   window.requestAnimationFrame(step);
-};
+});
