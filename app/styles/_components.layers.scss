@@ -1,5 +1,4 @@
 .c-layers {
-  transition: height 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &:before {
     content: '';
@@ -19,7 +18,13 @@
   overflow-y: hidden;
   padding: 0 $base-spacing-unit-large;
   position: relative;
-  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), height 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: border 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  top 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  left 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+  transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+  background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   width: 780px;
 
   @for $index from 1 through 10 {
@@ -45,6 +50,16 @@
 .c-layer--hide {
   opacity: 0;
   transform: scale(0.8);
+}
+
+.c-layer--visited:not(.c-layer--selected):not(.c-layer--hide) {
+  border-color: $color-grey-light;
+  color: $color-grey-light;
+
+  &:hover:not(.c-layer--selected) {
+    border-color: $color-grey;
+    color: $color-font-black;
+  }
 }
 
 .c-layer__content {
