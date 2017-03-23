@@ -22,7 +22,7 @@
   top 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   left 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-  transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
   opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
   background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   width: 780px;
@@ -66,12 +66,12 @@
 
   opacity: 0;
   padding: $base-spacing-unit-large $base-spacing-unit-large;
-  transition: opacity 0.3s, visibility 0s linear 0.35s;
+  transition: opacity 0.5s, visibility 0s linear 0.55s;
   visibility: hidden;
 
   @at-root .c-layer--selected > & {
     opacity: 1;
-    transition: opacity 0.2s;
+    transition: opacity 0.5s;
     visibility: visible;
   }
 

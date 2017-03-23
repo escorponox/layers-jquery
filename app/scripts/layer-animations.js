@@ -58,7 +58,7 @@ const moveForward = layer => {
     .then(layer => {
       const frontHeight = calculateLayerHeight(layer)
       const containerHeight = calculateContainerHeight(layer)
-      return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500)])
+      return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
     })
     .then(data => {
       console.log(data)
