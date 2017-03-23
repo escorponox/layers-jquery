@@ -10,7 +10,7 @@ const calculateContainerHeight = layer => {
   return Array.from(layer.parentNode.querySelectorAll('.c-layer'))
     .reduce((total, curr) => curr === layer
         ? calculateLayerHeight(curr) + total
-        : 57 + total
+        : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
       , 0)
 }
 
@@ -37,8 +37,8 @@ const animateMiddleLayers = (newFrontLayer, layer) => {
   }
 
   return new Promise((resolve) => {
-    layer.classList.add('c-layer--hide')
     setTimeout(() => {
+      layer.classList.add('c-layer--hide')
       const previousLayer = layer.previousElementSibling
       layer.parentNode.insertBefore(layer, layer.parentNode.firstElementChild)
       resolve(animateMiddleLayers(newFrontLayer, previousLayer))
