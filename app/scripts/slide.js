@@ -11,6 +11,9 @@ export default (layer, endHeight, duration, down = false) => new Promise((resolv
     layer.style.height = down
       ? easingDown(progress, initHeight, endHeight - initHeight, duration)
       : easing(progress, initHeight, endHeight - initHeight, duration)
+    // const contentHeight = Array.from(layer.children)
+    //   .reduce((total, curr) => curr.offsetHeight + total, 2)
+    // console.log(layer, layer.offsetHeight, contentHeight)
     if (progress < duration) {
       window.requestAnimationFrame(step)
     } else {
@@ -28,6 +31,7 @@ export default (layer, endHeight, duration, down = false) => new Promise((resolv
   }
 
   function endAnimation () {
+    layer.style.height = endHeight;
     resolve(layer)
   }
 

@@ -3,17 +3,14 @@ import slide from './slide'
 const labels = Array.from(document.querySelectorAll('.c-layer__label'))
 const layerContainers = Array.from(document.querySelectorAll('.c-layers'))
 
-const calculateLayerHeight = layer => {
-  const frontContentHeight = Array.from(layer.children)
-    .reduce((total, curr) => curr.offsetHeight + total, 2)
-  return frontContentHeight < 480 ? 480 : frontContentHeight
-}
+const calculateLayerHeight = layer => Array.from(layer.children)
+  .reduce((total, curr) => curr.offsetHeight + total, 2)
 
 const calculateContainerHeight = layer => {
   return Array.from(layer.parentNode.querySelectorAll('.c-layer'))
     .reduce((total, curr) => curr === layer
         ? calculateLayerHeight(curr) + total
-        : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
+        : 57 + total
       , 0)
 }
 
