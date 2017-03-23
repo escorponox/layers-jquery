@@ -11,10 +11,11 @@
   background-color: $color-background;
   border: 1px solid $color-grey;
   border-bottom: none;
-  border-right: none;
   color: $color-font-black;
   height: 480px;
   margin-top: -480px;
+  margin-left: auto;
+  margin-right: auto;
   overflow-y: hidden;
   padding: 0 $base-spacing-unit-large;
   position: relative;
@@ -25,18 +26,30 @@
   transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
   opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
   background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  width: 780px;
 
   @for $index from 1 through 10 {
     &:nth-of-type(#{$index}) {
       top: 57px * ($index - 1);
-      left: $base-spacing-unit * ($index - 1);
+      width: calc(100% - #{$base-spacing-unit * ($index - 1)});
     }
   }
 
   &:hover:not(.c-layer--selected) {
     border-color: $color-theme-lighter2;
     color: $color-theme-lighter2;
+  }
+
+  @include mq(960px) {
+    border-right: none;
+    margin-left: 0;
+    margin-right: 0;
+
+    @for $index from 1 through 10 {
+      &:nth-of-type(#{$index}) {
+        left: $base-spacing-unit * ($index - 1);
+        width: 780px;
+      }
+    }
   }
 }
 

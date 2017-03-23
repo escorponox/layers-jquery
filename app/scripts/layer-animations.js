@@ -57,10 +57,6 @@ const moveForward = layer => {
       const containerHeight = calculateContainerHeight(layer)
       return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
     })
-    .then(data => {
-      console.log(data)
-      return data
-    })
     .then(layers => {
       Array.from(layers[0].parentNode.querySelectorAll('.c-layer--hide'))
         .forEach(hiddenLayer => hiddenLayer.classList.remove('c-layer--hide'))
