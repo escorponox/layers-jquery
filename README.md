@@ -1,7 +1,5 @@
-# JIGSAW PUZZLE
+# LAYERS
 
-A jigsaw puzzle for [Bov Academy](https://bovacademy.com/)
+Layers component
 
 Developed with [Frontend Init](https://cusxio.github.io/frontend-init/)
-
-MIT © Jonathan Chan and Carlos Coves Prieto
