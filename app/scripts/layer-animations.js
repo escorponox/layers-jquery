@@ -49,6 +49,7 @@ const animateMiddleLayers = (newFrontLayer, layer) => {
       }, 500)
     })
     : staggedBackwards(layer)
+      .then(animateMiddleLayers.bind(null, newFrontLayer, layer.parentNode.lastElementChild))
 }
 
 const animateNewFrontLayer = layer => {
