@@ -14,6 +14,24 @@ const calculateContainerHeight = layer => {
       , 0)
 }
 
+const staggedBackwards = layer => {
+  return layer.previousElementSibling === null
+    ? new Promise((resolve) => {
+      setTimeout(() => {
+        layer.classList.remove('c-layer--hide')
+        resolve(layer.parentNode.lastElementChild)
+      }, 300)
+    })
+    : new Promise((resolve) => {
+      setTimeout(() => {
+        layer.classList.add('c-layer--hide')
+        const previousLayer = layer.previousElementSibling
+        layer.parentNode.insertBefore(layer, previousLayer)
+        resolve(staggedBackwards(layer))
+      }, 300)
+    })
+}
+
 const animateFrontLayer = layer => slide(layer, 480, 300)
   .then(layer => new Promise((resolve) => {
     setTimeout(() => {
@@ -21,29 +39,16 @@ const animateFrontLayer = layer => slide(layer, 480, 300)
       resolve(layer)
     }, 200)
   }))
-  .then(layer => new Promise((resolve) => {
-    const previousLayer = layer.previousElementSibling
-    layer.parentNode.insertBefore(layer, layer.parentNode.firstElementChild)
-    resolve(previousLayer)
-  }))
+  .then(staggedBackwards)
 
 const animateMiddleLayers = (newFrontLayer, layer) => {
-  if (newFrontLayer === layer) {
-    return new Promise((resolve) => {
+  return newFrontLayer === layer
+    ? new Promise((resolve) => {
       setTimeout(() => {
         resolve(newFrontLayer)
       }, 500)
     })
-  }
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      layer.classList.add('c-layer--hide')
-      const previousLayer = layer.previousElementSibling
-      layer.parentNode.insertBefore(layer, layer.parentNode.firstElementChild)
-      resolve(animateMiddleLayers(newFrontLayer, previousLayer))
-    }, 500)
-  })
+    : staggedBackwards(layer)
 }
 
 const moveForward = layer => {
@@ -58,12 +63,7 @@ const moveForward = layer => {
       return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
     })
     .then(layers => {
-      Array.from(layers[0].parentNode.querySelectorAll('.c-layer--hide'))
-        .forEach(hiddenLayer => hiddenLayer.classList.remove('c-layer--hide'))
-      return layer
-    })
-    .then(layer => {
-      Array.from(layer.parentNode.querySelectorAll('.c-layer__label'))
+      Array.from(layers[1].parentNode.querySelectorAll('.c-layer__label'))
         .forEach(label => label.addEventListener('click', moveForwardListener))
     })
 }
