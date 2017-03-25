@@ -51,19 +51,21 @@ const animateMiddleLayers = (newFrontLayer, layer) => {
     : staggedBackwards(layer)
 }
 
+const animateNewFrontLayer = layer => {
+  const frontHeight = calculateLayerHeight(layer)
+  const containerHeight = calculateContainerHeight(layer)
+  return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
+}
+
 const moveForward = layer => {
   Array.from(layer.parentNode.querySelectorAll('.c-layer__label'))
-    .forEach(label => label.addEventListener('click', moveForwardListener))
+    .forEach(label => label.removeEventListener('click', moveForwardListener))
 
   animateFrontLayer(layer.parentNode.lastElementChild)
     .then(animateMiddleLayers.bind(null, layer))
-    .then(layer => {
-      const frontHeight = calculateLayerHeight(layer)
-      const containerHeight = calculateContainerHeight(layer)
-      return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
-    })
+    .then(animateNewFrontLayer)
     .then(layers => {
-      Array.from(layers[1].parentNode.querySelectorAll('.c-layer__label'))
+      Array.from(layers[1].querySelectorAll('.c-layer__label'))
         .forEach(label => label.addEventListener('click', moveForwardListener))
     })
 }
