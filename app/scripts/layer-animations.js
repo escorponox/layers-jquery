@@ -6,31 +6,27 @@ const layerContainers = Array.from(document.querySelectorAll('.c-layers'))
 const calculateLayerHeight = layer => Array.from(layer.children)
   .reduce((total, curr) => curr.offsetHeight + total, 2)
 
-const calculateContainerHeight = layer => {
-  return Array.from(layer.parentNode.querySelectorAll('.c-layer'))
-    .reduce((total, curr) => curr === layer
-        ? calculateLayerHeight(curr) + total
-        : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
-      , 0)
-}
+const calculateContainerHeight = layer => Array.from(layer.parentNode.querySelectorAll('.c-layer'))
+  .reduce((total, curr) => curr === layer
+      ? calculateLayerHeight(curr) + total
+      : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
+    , 0)
 
-const staggedBackwards = layer => {
-  return layer.previousElementSibling === null
-    ? new Promise((resolve) => {
-      setTimeout(() => {
-        layer.classList.remove('c-layer--hide')
-        resolve(layer.parentNode.lastElementChild)
-      }, 300)
-    })
-    : new Promise((resolve) => {
-      setTimeout(() => {
-        layer.classList.add('c-layer--hide')
-        const previousLayer = layer.previousElementSibling
-        layer.parentNode.insertBefore(layer, previousLayer)
-        resolve(staggedBackwards(layer))
-      }, 300)
-    })
-}
+const staggedBackwards = layer => layer.previousElementSibling === null
+  ? new Promise((resolve) => {
+    setTimeout(() => {
+      layer.classList.remove('c-layer--hide')
+      resolve(layer.parentNode.lastElementChild)
+    }, 300)
+  })
+  : new Promise((resolve) => {
+    setTimeout(() => {
+      layer.classList.add('c-layer--hide')
+      const previousLayer = layer.previousElementSibling
+      layer.parentNode.insertBefore(layer, previousLayer)
+      resolve(staggedBackwards(layer))
+    }, 300)
+  })
 
 const animateFrontLayer = layer => slide(layer, 480, 300)
   .then(layer => new Promise((resolve) => {
@@ -41,16 +37,14 @@ const animateFrontLayer = layer => slide(layer, 480, 300)
   }))
   .then(staggedBackwards)
 
-const animateMiddleLayers = (newFrontLayer, layer) => {
-  return newFrontLayer === layer
-    ? new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(newFrontLayer)
-      }, 500)
-    })
-    : staggedBackwards(layer)
-      .then(animateMiddleLayers.bind(null, newFrontLayer, layer.parentNode.lastElementChild))
-}
+const animateMiddleLayers = (newFrontLayer, layer) => newFrontLayer === layer
+  ? new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(newFrontLayer)
+    }, 500)
+  })
+  : staggedBackwards(layer)
+    .then(animateMiddleLayers.bind(null, newFrontLayer, layer.parentNode.lastElementChild))
 
 const animateNewFrontLayer = layer => {
   const frontHeight = calculateLayerHeight(layer)
