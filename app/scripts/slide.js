@@ -1,9 +1,6 @@
 export default (layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
   let start = null
   const initHeight = layer.offsetHeight
-  if (layer.classList.contains('c-layer')) {
-    down ? layer.classList.add('c-layer--selected') : layer.classList.remove('c-layer--selected')
-  }
 
   function step (timestamp) {
     if (!start) start = timestamp

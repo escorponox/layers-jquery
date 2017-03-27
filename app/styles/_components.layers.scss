@@ -9,9 +9,10 @@
 
 .c-layer {
   background-color: $color-background;
-  border: 1px solid $color-grey;
+  border: 2px solid $color-unvisited-border;
   border-bottom: none;
-  color: $color-font-black;
+  color: $color-unvisited-title;
+  cursor: pointer;
   height: 480px;
   margin-left: auto;
   margin-right: auto;
@@ -22,25 +23,28 @@
   transition: border 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   top 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   left 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
-  color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-  transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-  opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-  background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+  background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: left, top;
 
   @for $index from 1 through 10 {
     &:nth-of-type(#{$index}) {
-      top: 57px * ($index - 1);
+      top: 60px * ($index - 1);
       width: calc(100% - #{$base-spacing-unit * ($index - 1)});
     }
 
-    &:nth-last-of-type(#{$index + 1}):not(.c-layer--selected) {
-      transform: scale(1 - 0.1 * $index) translateX(-39px*$index/(1 - 0.1 * $index)) translateY(-24px*$index/(1 - 0.1 * $index));
+    @include mq(960px) {
+      &:nth-last-of-type(#{$index + 1}):not(.c-layer--selected) {
+        transform: scale(1 - 0.1 * $index) translateX(-39px*$index/(1 - 0.1 * $index)) translateY(-24px*$index/(1 - 0.1 * $index));
+      }
     }
   }
 
   &:hover:not(.c-layer--selected) {
-    border-color: $color-theme-lighter2;
-    color: $color-theme-lighter2;
+    border-color: $color-selected-border;
+    color: $color-selected-border;
   }
 
   @include mq(960px) {
@@ -58,15 +62,17 @@
 }
 
 .c-layer--selected {
-  background-color: $color-theme-lighter5;
-  border-bottom: 1px solid $color-theme;
-  border-color: $color-theme;
-  border-right: 1px solid $color-theme;
+  background-color: $color-selected-bg;
+  border-bottom: 2px solid $color-selected-border;
+  border-color: $color-selected-border;
+  border-right: 2px solid $color-selected-border;
+  cursor: auto;
+  transition-duration: 0.8s;
 }
 
 .c-layer--hide {
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.8) !important;
 }
 
 .c-layer--visited:not(.c-layer--selected):not(.c-layer--hide) {
@@ -74,8 +80,8 @@
   color: $color-grey-light;
 
   &:hover:not(.c-layer--selected) {
-    border-color: $color-theme-lighter2;
-    color: $color-theme-lighter2;
+    border-color: $color-visited;
+    color: $color-visited;
   }
 }
 
@@ -83,12 +89,12 @@
 
   opacity: 0;
   padding: $base-spacing-unit-large $base-spacing-unit-large;
-  transition: opacity 0.5s, visibility 0s linear 0.55s;
+  transition: opacity 0.8s, visibility 0s linear 0.85s;
   visibility: hidden;
 
   @at-root .c-layer--selected > & {
     opacity: 1;
-    transition: opacity 0.5s;
+    transition: opacity 0.8s;
     visibility: visible;
   }
 
@@ -96,8 +102,15 @@
 
 .c-layer__label {
   cursor: pointer;
-  @include font-size(20px, 56px);
+  @include font-size(20px, 60px);
   display: block;
   user-select: none;
+
+  @at-root .c-layer--selected > & {
+    color: $color-selected-title;
+    cursor: default;
+    transition: color 0.8s;
+    font-weight: 600;
+  }
 }
 
