@@ -76,17 +76,17 @@
 }
 
 .c-layer--visited:not(.c-layer--selected):not(.c-layer--hide) {
-  border-color: $color-grey-light;
-  color: $color-grey-light;
+  border-color: $color-visited;
+  color: $color-visited;
 
   &:hover:not(.c-layer--selected) {
-    border-color: $color-visited;
-    color: $color-visited;
+    border-color: $color-selected-border;
+    color: $color-selected-border;
   }
 }
 
 .c-layer__content {
-
+  color: $color-selected-text;
   opacity: 0;
   padding: $base-spacing-unit-large $base-spacing-unit-large;
   transition: opacity 0.8s, visibility 0s linear 0.85s;
