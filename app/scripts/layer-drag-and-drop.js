@@ -12,7 +12,7 @@ const safeTransition = (layer) => {
   setTimeout(() => {
     layer.addEventListener('mouseleave', mouseLeave)
     layer.addEventListener('mouseenter', mouseEnter)
-  }, 200)
+  }, 100)
 }
 
 const mouseLeave = event => {
@@ -21,7 +21,6 @@ const mouseLeave = event => {
     const enteringElement = event.relatedTarget
 
     if (utils.isAncestor(leavingLayer, enteringElement)) {
-      console.log('arriba', event.target, event.relatedTarget)
       leavingLayer.parentNode.insertBefore(draggedLayer, draggedLayer.parentNode.firstElementChild)
       draggedLayer.classList.add('c-layer--drop')
     }
@@ -31,7 +30,6 @@ const mouseLeave = event => {
 const mouseEnter = event => {
   if (draggedLayer && event.buttons === 1) {
     const target = event.target
-    console.log('enter', event.target, event.relatedTarget)
     if (target !== draggedLayer && utils.isNextSibling(draggedLayer, target)) {
       safeTransition(target)
       target.parentNode.insertBefore(draggedLayer, target.nextElementSibling)
@@ -52,7 +50,7 @@ const dropLayer = () => {
     const frontHeight = utils.calculateLayerHeight(newFrontLayer)
     const containerHeight = utils.calculateContainerHeight(newFrontLayer)
 
-    document.body.classList.remove('grabbing')
+    document.body.classList.remove('c-layer--body-grabbing')
     draggedLayer.classList.remove('c-layer--dragging')
     newFrontLayer.classList.add('c-layer--selected')
     utils.slide(newFrontLayer, frontHeight, 500, true)
@@ -74,7 +72,7 @@ const pickLabel = event => {
 const pickLayer = event => {
   event.preventDefault()
   event.stopPropagation()
-  document.body.classList.add('grabbing')
+  document.body.classList.add('c-layer--body-grabbing')
   utils.slide(event.currentTarget.parentNode.lastElementChild, 480, 300)
     .then(layer => {
       layer.classList.remove('c-layer--selected')

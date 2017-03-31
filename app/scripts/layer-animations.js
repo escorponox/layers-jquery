@@ -16,7 +16,7 @@ const staggeredBackwards = (backwardsLayers, previousLayer) => {
       })
       setTimeout(() => {
         resolve(staggeredBackwards(backwardsLayers, backwardsLayers[backwardsLayers.length - 1].previousElementSibling))
-      }, 300)
+      }, 200)
     })
     : Promise.resolve(backwardsLayers)
 }
