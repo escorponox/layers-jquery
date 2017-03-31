@@ -21,6 +21,7 @@
   overflow: hidden;
   padding: 0 $base-spacing-unit-large;
   position: relative;
+  transform-origin: 0 0 0;
   transition: border 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   top 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   left 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
@@ -28,7 +29,10 @@
   transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
-  will-change: left, top;
+  &:hover:not(.c-layer--selected) {
+    border-color: $color-selected-border;
+    color: $color-selected-border;
+  }
 
   @for $index from 1 through 10 {
     &:nth-of-type(#{$index}) {
@@ -38,14 +42,9 @@
 
     @include mq(960px) {
       &:nth-last-of-type(#{$index + 1}):not(.c-layer--selected) {
-        transform: scale(1 - 0.1 * $index) translateX(-39px*$index/(1 - 0.1 * $index)) translateY(-24px*$index/(1 - 0.1 * $index));
+        transform: scale(1 - 0.1 * $index);
       }
     }
-  }
-
-  &:hover:not(.c-layer--selected) {
-    border-color: $color-selected-border;
-    color: $color-selected-border;
   }
 
   @include mq(960px) {
@@ -60,6 +59,8 @@
       }
     }
   }
+
+  will-change: left, top;
 }
 
 .c-layer--selected {
@@ -73,16 +74,41 @@
 
 .c-layer--hide {
   opacity: 0;
-  transform: scale(0.8) !important;
+  transform: scale(0.8) translate(200px, 200px) !important;
 }
 
-.c-layer--visited:not(.c-layer--selected):not(.c-layer--hide) {
+.c-layer--visited:not(.c-layer--selected):not(.c-layer--hide):not(.c-layer--dragging) {
   border-color: $color-visited;
   color: $color-visited;
 
   &:hover:not(.c-layer--selected) {
     border-color: $color-selected-border;
     color: $color-selected-border;
+  }
+}
+
+.c-layer--dragging {
+  border-color: $color-selected-border;
+  color: $color-selected-border;
+}
+
+@for $index from 1 through 10 {
+  @keyframes droplayer#{$index} {
+    0% {
+      opacity: 0;
+      transform: scale(0.1) translate(200px, 200px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1 - 0.1 * $index) translate(0, 0);
+    }
+  }
+
+  .c-layer--drop {
+    &:nth-last-of-type(#{$index}) {
+      animation: droplayer#{$index} 0.3s ease-in 1;
+    }
   }
 }
 
@@ -102,7 +128,7 @@
 }
 
 .c-layer__label {
-  cursor: pointer;
+  cursor: move;
   @include font-size(20px, 60px);
   display: block;
   user-select: none;

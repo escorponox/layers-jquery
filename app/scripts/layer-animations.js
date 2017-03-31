@@ -1,19 +1,8 @@
-import slide from './slide'
+import {slide, calculateLayerHeight, calculateContainerHeight} from './layer-utils'
 
 const layers = Array.from(document.querySelectorAll('.c-layer'))
 const layerContainers = Array.from(document.querySelectorAll('.c-layers'))
 
-const calculateLayerHeight = layer => {
-  const contentHeight = Array.from(layer.children)
-    .reduce((total, curr) => curr.offsetHeight + total, 2)
-  return contentHeight < 480 ? 480 : contentHeight
-}
-
-const calculateContainerHeight = layer => Array.from(layer.parentNode.querySelectorAll('.c-layer'))
-  .reduce((total, curr) => curr === layer
-      ? calculateLayerHeight(curr) + total
-      : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
-    , 0)
 
 const staggeredBackwards = (backwardsLayers, previousLayer) => {
 
