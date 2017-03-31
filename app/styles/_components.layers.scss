@@ -140,3 +140,7 @@
   }
 }
 
+.c-layer--grabbing * {
+  cursor: move !important;
+  cursor: grabbing !important;
+}

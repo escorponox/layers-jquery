@@ -52,6 +52,7 @@ const dropLayer = () => {
     const frontHeight = utils.calculateLayerHeight(newFrontLayer)
     const containerHeight = utils.calculateContainerHeight(newFrontLayer)
 
+    document.body.classList.remove('grabbing')
     draggedLayer.classList.remove('c-layer--dragging')
     newFrontLayer.classList.add('c-layer--selected')
     utils.slide(newFrontLayer, frontHeight, 500, true)
@@ -73,7 +74,7 @@ const pickLabel = event => {
 const pickLayer = event => {
   event.preventDefault()
   event.stopPropagation()
-  document.body.style.cursor = 'grabbing'
+  document.body.classList.add('grabbing')
   utils.slide(event.currentTarget.parentNode.lastElementChild, 480, 300)
     .then(layer => {
       layer.classList.remove('c-layer--selected')
