@@ -66,14 +66,12 @@ const animateNewFrontLayer = layer => {
 }
 
 const moveForward = layer => {
-  Array.from(layer.parentNode.querySelectorAll('.c-layer__label'))
-    .forEach(label => label.removeEventListener('click', moveForwardListener))
+  layers.forEach(label => label.removeEventListener('click', moveForwardListener))
 
   animateFrontLayers(layer)
     .then(animateNewFrontLayer)
-    .then(layers => {
-      Array.from(layers[1].querySelectorAll('.c-layer'))
-        .forEach(label => label.addEventListener('click', moveForwardListener))
+    .then(() => {
+      layers.forEach(label => label.addEventListener('click', moveForwardListener))
     })
 }
 

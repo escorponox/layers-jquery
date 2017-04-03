@@ -1,8 +1,7 @@
 import * as utils from './layer-utils'
 
 const layers = Array.from(document.querySelectorAll('.c-layer'))
-const layerLabels = Array.from(document.querySelectorAll('.c-layer__label'))
-const layerContainers = Array.from(document.querySelectorAll('.c-layers'))
+const layerDragIcons = Array.from(document.querySelectorAll('.c-layer__header__icon-drag'))
 
 let draggedLayer = undefined
 
@@ -64,25 +63,25 @@ const dropLayer = () => {
 
 const pickLabel = event => {
   event.preventDefault()
-  draggedLayer = event.target.parentNode
+  draggedLayer = event.target.parentNode.parentNode
+  console.log(draggedLayer)
   draggedLayer.draggable = true
   draggedLayer.classList.add('c-layer--dragging')
 }
 
 const pickLayer = event => {
+  document.body.classList.add('h-layer--body-grabbing')
   event.preventDefault()
   event.stopPropagation()
-  document.body.classList.add('h-layer--body-grabbing')
   utils.slide(event.currentTarget.parentNode.lastElementChild, 480, 300)
     .then(layer => {
       layer.classList.remove('c-layer--selected')
       layer.classList.add('c-layer--visited')
     })
-  event.dataTransfer.dropEffect = 'move'
 }
 
 export default () => {
-  layerLabels.forEach(label => label.addEventListener('dragstart', pickLabel))
+  layerDragIcons.forEach(icon => icon.addEventListener('dragstart', pickLabel))
   layers.forEach(layer => {
     layer.addEventListener('dragstart', pickLayer)
     layer.addEventListener('mouseleave', mouseLeave)

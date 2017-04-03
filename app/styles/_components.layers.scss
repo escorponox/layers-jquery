@@ -34,10 +34,10 @@
     color: $color-selected-border;
   }
 
-  @for $index from 1 through 10 {
+  @for $index from 1 through 4 {
     &:nth-of-type(#{$index}) {
       top: 60px * ($index - 1);
-      width: calc(100% - #{$base-spacing-unit * ($index - 1)});
+      width: calc(100% - #{$base-spacing-unit / 2 * ($index - 1)});
     }
 
     @include mq(960px) {
@@ -52,7 +52,7 @@
     margin-left: 0;
     margin-right: 0;
 
-    @for $index from 1 through 10 {
+    @for $index from 1 through 4 {
       &:nth-of-type(#{$index}) {
         left: $base-spacing-unit * ($index - 1);
         width: 780px;
@@ -74,7 +74,11 @@
 
 .c-layer--hide {
   opacity: 0;
-  transform: scale(0.8) translate(200px, 200px) !important;
+  transform: scale(0.8) !important;
+
+  @include mq(960px) {
+    transform: scale(0.8) translate(200px, 200px) !important;
+  }
 }
 
 .c-layer--visited:not(.c-layer--selected):not(.c-layer--hide):not(.c-layer--dragging) {
@@ -92,7 +96,7 @@
   color: $color-selected-border;
 }
 
-@for $index from 1 through 10 {
+@for $index from 1 through 4 {
   @keyframes droplayer#{$index} {
     0% {
       opacity: 0;
@@ -127,17 +131,47 @@
 
 }
 
-.c-layer__label {
-  cursor: move;
-  @include font-size(20px, 60px);
-  display: block;
+.c-layer__header {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
   user-select: none;
 
-  @at-root .c-layer--selected > & {
+  @at-root .c-layer--selected & {
     color: $color-selected-title;
     transition: color 0.8s;
+  }
+
+}
+
+.c-layer__header__label {
+  @include font-size(20px, 60px);
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @at-root .c-layer--selected & {
     font-weight: 600;
   }
+}
+
+.c-layer__header__icon-visited {
+  display: none;
+  flex-shrink: 0;
+  margin: 0 $base-spacing-unit;
+
+  @at-root .c-layer--visited:not(.c-layer--selected) & {
+    display: block;
+  }
+}
+
+.c-layer__header__icon-drag {
+  cursor: move;
+  cursor: grab;
+  flex-shrink: 0;
+  margin-left: auto;
+  text-align: right;
 }
 
 .h-layer--body-grabbing {

@@ -11,7 +11,8 @@
   <link rel="manifest" href="manifest.json">
   <link rel="mask-icon" href="safari-pinned-tab.svg" color="#151517">
   <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:300,400,700" rel="stylesheet">
   <link rel="stylesheet" href="styles/app.css">
 </head>
 
@@ -22,7 +23,10 @@
 <main>
   <div class="c-layers">
     <div class="c-layer">
-      <div class="c-layer__label" draggable="true">LAYER 1</div>
+      <div class="c-layer__header" draggable="true">
+        <span class="c-layer__header__label">LAYER 1</span>
+        <i class="material-icons c-layer__header__icon-visited">done</i>
+        <i class="material-icons c-layer__header__icon-drag" draggable="true">pan_tool</i></div>
       <div class="c-layer__content">
         <h3>LOREM IPSUM DOLOR</h3>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
@@ -55,7 +59,11 @@
       </div>
     </div>
     <div class="c-layer">
-      <div class="c-layer__label" draggable="true">LAYER 2</div>
+      <div class="c-layer__header" draggable="true">
+        <span class="c-layer__header__label">LAYER 2</span>
+        <i class="material-icons c-layer__header__icon-visited">done</i>
+        <i class="material-icons c-layer__header__icon-drag" draggable="true">pan_tool</i>
+      </div>
       <div class="c-layer__content">
         <h3>LOREM IPSUM DOLOR</h3>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
@@ -70,7 +78,11 @@
       </div>
     </div>
     <div class="c-layer">
-      <label class="c-layer__label" draggable="true">LAYER 3</label>
+      <label class="c-layer__header" draggable="true">
+        <span class="c-layer__header__label">LAYER 3</span>
+        <i class="material-icons c-layer__header__icon-visited">done</i>
+        <i class="material-icons c-layer__header__icon-drag" draggable="true">pan_tool</i>
+      </label>
       <div class="c-layer__content">
         <h3>LOREM IPSUM DOLOR</h3>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
@@ -103,7 +115,11 @@
       </div>
     </div>
     <div class="c-layer c-layer--selected">
-      <label class="c-layer__label" draggable="true">LAYER 4</label>
+      <label class="c-layer__header">
+        <span class="c-layer__header__label">LAYER 4</span>
+        <i class="material-icons c-layer__header__icon-visited">done</i>
+        <i class="material-icons c-layer__header__icon-drag" draggable="true">pan_tool</i>
+      </label>
       <div class="c-layer__content">
         <h3>LOREM IPSUM DOLOR</h3>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum

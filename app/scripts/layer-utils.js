@@ -31,7 +31,7 @@ export const calculateLayerHeight = layer => {
 export const calculateContainerHeight = layer => Array.from(layer.parentNode.querySelectorAll('.c-layer'))
   .reduce((total, curr) => curr === layer
       ? calculateLayerHeight(curr) + total
-      : curr.querySelector('.c-layer__label').offsetHeight + 1 + total
+      : curr.querySelector('.c-layer__header').offsetHeight + 1 + total
     , 0)
 
 export const slide = (layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
@@ -44,9 +44,6 @@ export const slide = (layer, endHeight, duration, down = false) => new Promise((
     layer.style.height = down
       ? easingDown(progress, initHeight, endHeight - initHeight, duration)
       : easing(progress, initHeight, endHeight - initHeight, duration)
-    // const contentHeight = Array.from(layer.children)
-    //   .reduce((total, curr) => curr.offsetHeight + total, 2)
-    // console.log(layer, layer.offsetHeight, contentHeight)
     if (progress < duration) {
       window.requestAnimationFrame(step)
     } else {
