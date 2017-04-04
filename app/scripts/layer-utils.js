@@ -1,10 +1,4 @@
-export const isAncestor = (element, ancestor) => {
-  let parent = element.parentNode
-  while (parent !== document && parent !== ancestor) {
-    parent = parent.parentNode
-  }
-  return parent !== document
-}
+export const isOutOfLayers = (element) => !element.classList.contains('c-layer')
 
 export const isNextSibling = (element, sibling) => {
   let nextElement = element.nextElementSibling

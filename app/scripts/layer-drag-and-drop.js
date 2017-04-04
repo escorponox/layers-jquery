@@ -19,7 +19,7 @@ const mouseLeave = event => {
     const leavingLayer = event.target
     const enteringElement = event.relatedTarget
 
-    if (utils.isAncestor(leavingLayer, enteringElement)) {
+    if (utils.isOutOfLayers(enteringElement)) {
       leavingLayer.parentNode.insertBefore(draggedLayer, draggedLayer.parentNode.firstElementChild)
       draggedLayer.classList.add('c-layer--drop')
     }
@@ -64,7 +64,6 @@ const dropLayer = () => {
 const pickLabel = event => {
   event.preventDefault()
   draggedLayer = event.target.parentNode.parentNode
-  console.log(draggedLayer)
   draggedLayer.draggable = true
   draggedLayer.classList.add('c-layer--dragging')
 }
