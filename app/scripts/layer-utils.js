@@ -1,4 +1,5 @@
-export const isOutOfLayers = (element) => !element.classList.contains('c-layer')
+export const isOutOfLayers = (element) => element.classList.contains('c-layers')
+|| !Array.from(element.classList).some(elementClass => elementClass.match(/^c-layer/))
 
 export const isNextSibling = (element, sibling) => {
   let nextElement = element.nextElementSibling
@@ -36,8 +37,8 @@ export const slide = (layer, endHeight, duration, down = false) => new Promise((
     if (!start) start = timestamp
     const progress = timestamp - start
     layer.style.height = down
-      ? easingDown(progress, initHeight, endHeight - initHeight, duration)
-      : easing(progress, initHeight, endHeight - initHeight, duration)
+      ? easingDown(progress, initHeight, endHeight - initHeight, duration) + 'px'
+      : easing(progress, initHeight, endHeight - initHeight, duration) + 'px'
     if (progress < duration) {
       window.requestAnimationFrame(step)
     } else {
@@ -55,7 +56,7 @@ export const slide = (layer, endHeight, duration, down = false) => new Promise((
   }
 
   function endAnimation () {
-    layer.style.height = endHeight
+    layer.style.height = endHeight + 'px'
     resolve(layer)
   }
 

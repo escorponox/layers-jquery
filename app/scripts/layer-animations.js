@@ -86,7 +86,7 @@ export default () => {
   layers.forEach(layer => layer.addEventListener('click', moveForwardListener))
   layerContainers.forEach(layerContainer => {
     const selected = layerContainer.querySelector('.c-layer--selected')
-    selected.style.height = calculateLayerHeight(selected)
-    layerContainer.style.height = calculateContainerHeight(selected)
+    selected.style.height = calculateLayerHeight(selected) + 'px'
+    layerContainer.style.height = calculateContainerHeight(selected) + 'px'
   })
 }
