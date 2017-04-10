@@ -1,5 +1,5 @@
 const documentReady = (...callbacks) => {
-  if (document.readyState === 'complete') {
+  if (document.readyState === "interactive" || document.readyState === "complete") {
     callbacks.forEach(cb => cb())
   }
   else {
