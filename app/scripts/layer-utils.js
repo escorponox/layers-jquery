@@ -26,8 +26,8 @@ export const calculateLayerHeight = layer => {
 export const calculateContainerHeight = layer => Array.from(layer.parentNode.querySelectorAll('.c-layer'))
   .reduce((total, curr) => curr === layer
       ? calculateLayerHeight(curr) + total
-      : curr.querySelector('.c-layer__header').offsetHeight + 1 + total
-    , 0)
+      : curr.querySelector('.c-layer__header').offsetHeight + total
+    , 2)
 
 export const slide = (layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
   let start = null

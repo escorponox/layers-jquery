@@ -12,7 +12,7 @@
 .c-layer {
   background-color: $color-background;
   border: 1px solid $color-unvisited-border;
-  border-bottom: none;
+  border-bottom-color: transparent;
   border-radius: 2px;
   color: $color-unvisited-title;
   cursor: pointer;
@@ -32,7 +32,8 @@
   opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
   background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
   &:hover:not(.c-layer--selected) {
-    border-color: $color-selected-border;
+    border-top-color: $color-selected-border;
+    border-left-color: $color-selected-border;
     color: $color-selected-border;
   }
 
@@ -50,7 +51,7 @@
   }
 
   @include mq(960px) {
-    border-right: none;
+    border-right-color: transparent;
     margin-left: 0;
     margin-right: 0;
 
@@ -68,9 +69,7 @@
 
 .c-layer--selected {
   background-color: $color-selected-bg;
-  border-bottom: 1px solid $color-selected-border;
   border-color: $color-selected-border;
-  border-right: 1px solid $color-selected-border;
   cursor: auto;
   transition-duration: 0.8s;
 }
@@ -85,17 +84,20 @@
 }
 
 .c-layer--visited:not(.c-layer--selected):not(.c-layer--hide):not(.c-layer--dragging) {
-  border-color: $color-visited;
+  border-top-color: $color-visited;
+  border-left-color: $color-visited;
   color: $color-visited;
 
   &:hover:not(.c-layer--selected) {
-    border-color: $color-selected-border;
+    border-top-color: $color-selected-border;
+    border-left-color: $color-selected-border;
     color: $color-selected-border;
   }
 }
 
 .c-layer--dragging {
-  border-color: $color-selected-border;
+  border-top-color: $color-selected-border;
+  border-left-color: $color-selected-border;
   color: $color-selected-border;
 }
 
