@@ -17,28 +17,27 @@ export const isPreviousSibling = (element, sibling) => {
   return previousElement !== null
 }
 
-export const calculateLayerHeight = layer => {
-  const contentHeight = Array.from(layer.children)
+export const calculateLayerHeight = $layer => {
+  const contentHeight = $layer.children().toArray()
     .reduce((total, curr) => curr.offsetHeight + total, 2)
   return contentHeight < 480 ? 480 : contentHeight
 }
 
-export const calculateContainerHeight = layer => Array.from(layer.parentNode.querySelectorAll('.c-layer'))
-  .reduce((total, curr) => curr === layer
-      ? calculateLayerHeight(curr) + total
-      : curr.querySelector('.c-layer__header').offsetHeight + total
-    , 2)
+export const calculateContainerHeight = $layer => $layer.siblings().toArray()
+  .reduce((total, curr) => curr.querySelector('.c-layer__header').offsetHeight + total
+    , calculateLayerHeight($layer))
 
-export const slide = (layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
+export const slide = ($layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
   let start = null
-  const initHeight = layer.offsetHeight
+  const initHeight = $layer.css('height')
 
   function step (timestamp) {
     if (!start) start = timestamp
     const progress = timestamp - start
-    layer.style.height = down
-      ? easingDown(progress, initHeight, endHeight - initHeight, duration) + 'px'
-      : easing(progress, initHeight, endHeight - initHeight, duration) + 'px'
+    const newHeight = down
+      ? easingDown(progress, initHeight, endHeight - initHeight, duration)
+      : easing(progress, initHeight, endHeight - initHeight, duration)
+    $layer.css('height', newHeight)
     if (progress < duration) {
       window.requestAnimationFrame(step)
     } else {
@@ -56,8 +55,8 @@ export const slide = (layer, endHeight, duration, down = false) => new Promise((
   }
 
   function endAnimation () {
-    layer.style.height = endHeight + 'px'
-    resolve(layer)
+    $layer.css('height', endHeight)
+    resolve($layer)
   }
 
   window.requestAnimationFrame(step)

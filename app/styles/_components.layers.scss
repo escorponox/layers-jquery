@@ -150,7 +150,7 @@
 
 }
 
-.c-layer__header__label {
+.c-layer__label {
   @include font-size(20px, 60px);
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -161,7 +161,7 @@
   }
 }
 
-.c-layer__header__icon-visited {
+.c-layer__icon-visited {
   display: none;
   flex-shrink: 0;
   margin: 0 $base-spacing-unit;
@@ -171,7 +171,7 @@
   }
 }
 
-.c-layer__header__icon-drag {
+.c-layer__icon-drag {
   cursor: move;
   cursor: grab;
   flex-shrink: 0;

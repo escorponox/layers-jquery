@@ -17,6 +17,7 @@ export default (env = {dev: true}) => {
       path: path.join(__dirname, 'dist'),
       filename: '[name].bundle.[hash].js'
     },
+    externals: ['window'],
     devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
     devServer: {
       contentBase: path.resolve(__dirname, './dist/'),  // New
@@ -108,6 +109,10 @@ export default (env = {dev: true}) => {
       }) : undefined,
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor'
+      }),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
       })
 
     ].filter(p => !!p)

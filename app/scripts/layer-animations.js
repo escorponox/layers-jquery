@@ -83,10 +83,10 @@ const moveForwardListener = event => {
 }
 
 export default () => {
-  layers.forEach(layer => layer.addEventListener('click', moveForwardListener))
-  layerContainers.forEach(layerContainer => {
-    const selected = layerContainer.querySelector('.c-layer--selected')
-    selected.style.height = calculateLayerHeight(selected) + 'px'
-    layerContainer.style.height = calculateContainerHeight(selected) + 'px'
-  })
+  // layers.forEach(layer => layer.addEventListener('click', moveForwardListener))
+  // layerContainers.forEach(layerContainer => {
+  //   const selected = layerContainer.querySelector('.c-layer--selected')
+  //   selected.style.height = calculateLayerHeight(selected) + 'px'
+  //   layerContainer.style.height = calculateContainerHeight(selected) + 'px'
+  // })
 }
