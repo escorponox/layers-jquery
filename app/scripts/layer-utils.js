@@ -1,21 +1,9 @@
 export const isOutOfLayers = (element) => element.classList.contains('c-layers')
 || !Array.from(element.classList).some(elementClass => elementClass.match(/^c-layer/))
 
-export const isNextSibling = (element, sibling) => {
-  let nextElement = element.nextElementSibling
-  while (nextElement !== null && nextElement !== sibling) {
-    nextElement = nextElement.nextElementSibling
-  }
-  return nextElement !== null
-}
+export const isNextSibling = ($element, sibling) => $element.nextAll().is(sibling)
 
-export const isPreviousSibling = (element, sibling) => {
-  let previousElement = element.previousElementSibling
-  while (previousElement !== null && previousElement !== sibling) {
-    previousElement = previousElement.previousElementSibling
-  }
-  return previousElement !== null
-}
+export const isPreviousSibling = ($element, sibling) => $element.prevAll().is(sibling)
 
 export const calculateLayerHeight = $layer => {
   const contentHeight = $layer.children().toArray()

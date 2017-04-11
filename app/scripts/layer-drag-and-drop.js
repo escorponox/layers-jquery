@@ -5,12 +5,12 @@ const $layerDragIcons = $('.c-layer__icon-drag')
 
 let $draggedLayer = undefined
 
-const safeTransition = (layer) => {
-  layer.removeEventListener('mouseleave', mouseLeave)
-  layer.removeEventListener('mouseenter', mouseEnter)
+const safeTransition = ($layer) => {
+  $layer.off('mouseleave')
+  $layer.off('mouseenter')
   setTimeout(() => {
-    layer.addEventListener('mouseleave', mouseLeave)
-    layer.addEventListener('mouseenter', mouseEnter)
+    $layer.on('mouseleave', mouseLeave)
+    $layer.on('mouseenter', mouseEnter)
   }, 100)
 }
 
@@ -28,16 +28,16 @@ const mouseLeave = event => {
 
 const mouseEnter = event => {
   if ($draggedLayer && event.buttons === 1) {
-    const target = event.target
+    const target = event.delegateTarget
     if (target !== $draggedLayer && utils.isNextSibling($draggedLayer, target)) {
-      safeTransition(target)
-      target.parentNode.insertBefore($draggedLayer, target.nextElementSibling)
-      $draggedLayer.classList.add('c-layer--drop')
+      safeTransition($(target))
+      $draggedLayer.insertAfter(target)
+      $draggedLayer.addClass('c-layer--drop')
     }
-    if (target !== $draggedLayer && utils.isPreviousSibling($draggedLayer.previousElementSibling, target)) {
-      safeTransition(target)
-      target.parentNode.insertBefore($draggedLayer, target.nextElementSibling)
-      $draggedLayer.classList.add('c-layer--drop')
+    if (target !== $draggedLayer && utils.isPreviousSibling($draggedLayer.prev(), target)) {
+      safeTransition($(target))
+      $draggedLayer.insertBefore(target.nextElementSibling)
+      $draggedLayer.addClass('c-layer--drop')
     }
   }
 }
@@ -99,7 +99,7 @@ export default () => {
 
   $layers.on('dragstart', '.c-layer__icon-drag', pickLayer)
   $layers.on('mouseleave', mouseLeave)
-  // $layers.on('mouseenter', mouseEnter)
+  $layers.on('mouseenter', mouseEnter)
 
   $(window).on('mouseup', dropLayer)
 }
