@@ -1,92 +1,97 @@
-import {slide, calculateLayerHeight, calculateContainerHeight} from './layer-utils'
+import { calculateLayerHeight, calculateContainerHeight } from './layer-utils'
 
-const layers = Array.from(document.querySelectorAll('.c-layer'))
-const layerContainers = Array.from(document.querySelectorAll('.c-layers'))
+const $layers = $('.c-layer')
+const $layerContainers = $('.c-layers')
 
+const staggeredBackwards = $backwardsLayers => {
 
-const staggeredBackwards = (backwardsLayers, previousLayer) => {
-
-  previousLayer = previousLayer || backwardsLayers[backwardsLayers.length - 1].previousElementSibling
-  return previousLayer !== null
-    ? new Promise((resolve) => {
-      backwardsLayers.forEach((bLayer, index) => {
-        index === 0
-          ? bLayer.parentNode.insertBefore(bLayer, previousLayer)
-          : bLayer.parentNode.insertBefore(bLayer, backwardsLayers[index - 1])
-      })
+  const previousLayer = $backwardsLayers.first().prev()
+  return previousLayer.length
+    ? $.Deferred(deferred => {
+      $backwardsLayers.insertBefore(previousLayer)
       setTimeout(() => {
-        resolve(staggeredBackwards(backwardsLayers, backwardsLayers[backwardsLayers.length - 1].previousElementSibling))
+        deferred.resolve(staggeredBackwards($backwardsLayers))
       }, 200)
     })
-    : Promise.resolve(backwardsLayers)
+    : $backwardsLayers.promise()
 }
 
-const animateFrontLayers = layer => slide(layer.parentNode.lastElementChild, 480, 300)
-  .then(oldFrontLayer => new Promise((resolve) => {
-    oldFrontLayer.classList.add('c-layer--visited')
-    oldFrontLayer.classList.remove('c-layer--selected')
-    const backwardsLayers = [oldFrontLayer]
-    let previousLayer = oldFrontLayer.previousElementSibling
-    while (previousLayer !== layer) {
-      backwardsLayers.push(previousLayer)
-      previousLayer = previousLayer.previousElementSibling
+const moveForward = $layer => {
+  $layers.off('click')
+  $layer.parent().children().last().animate({
+    height: '480px',
+  }, {
+    duration: 300,
+    start: function () {
+      $(this).removeClass('c-layer--selected')
+      $(this).addClass('c-layer--visited')
+    },
+    complete: function () {
+
+      const $backwardsLayers = $layer.nextAll()
+      const blLength = $backwardsLayers.length
+
+      $.Deferred(deferred => {
+        $($backwardsLayers.get().reverse()).each((index, layer) => {
+          setTimeout(() => {
+            $(layer).addClass('c-layer--hide')
+            if (index === blLength - 1) {
+              setTimeout(() => {
+                deferred.resolve($backwardsLayers)
+              }, 150)
+            }
+          }, 150 * index)
+        })
+      })
+        .then(staggeredBackwards)
+        .then($bLayers => {
+          $($bLayers.get().reverse()).each((index, layer) => {
+            setTimeout(() => {
+              $(layer).removeClass('c-layer--hide')
+            }, 200 * index)
+          })
+
+          const $container = $layer.parent()
+          const frontHeight = calculateLayerHeight($layer)
+          const containerHeight = calculateContainerHeight($layer)
+
+          $layer.addClass('c-layer--selected')
+
+          $container.animate({
+            height: containerHeight + 'px',
+          }, {
+            duration: 500,
+          })
+          $layer.animate({
+            height: frontHeight + 'px',
+          }, {
+            duration: 500,
+            start: function () {
+              $(this).addClass('c-layer--selected')
+            },
+            complete: () => {
+              $layers.on('click', moveForwardListener)
+            }
+          })
+
+        })
+
     }
-    setTimeout(() => {
-      resolve(backwardsLayers)
-    }, 150)
-  }))
-  .then(backwardsLayers => Promise.all(backwardsLayers.map((blayer, index) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        blayer.classList.add('c-layer--hide')
-        resolve(blayer)
-      }, 150 * index)
-    })
-  })))
-  .then(data => new Promise(resolve => {
-    setTimeout(() => {
-      resolve(data)
-    }, 150)
-  }))
-  .then(backwardsLayers => new Promise((resolve) => {
-    layer.classList.add('c-layer--selected')
-    resolve(layer)
-    staggeredBackwards(backwardsLayers, layer)
-      .then(backwardsLayers => backwardsLayers.forEach((blayer, index) => {
-        setTimeout(() => {
-          blayer.classList.remove('c-layer--hide')
-        }, 200 * (index + 1))
-      }))
-  }))
-
-const animateNewFrontLayer = layer => {
-  const frontHeight = calculateLayerHeight(layer)
-  const containerHeight = calculateContainerHeight(layer)
-  return Promise.all([slide(layer, frontHeight, 500, true), slide(layer.parentNode, containerHeight, 500, true)])
-}
-
-const moveForward = layer => {
-  layers.forEach(label => label.removeEventListener('click', moveForwardListener))
-
-  animateFrontLayers(layer)
-    .then(animateNewFrontLayer)
-    .then(() => {
-      layers.forEach(label => label.addEventListener('click', moveForwardListener))
-    })
+  })
 }
 
 const moveForwardListener = event => {
-  const layer = event.currentTarget
-  if (!layer.classList.contains('c-layer--selected')) {
-    moveForward(layer)
+  const $layer = $(event.currentTarget)
+  if (!$layer.hasClass('c-layer--selected')) {
+    moveForward($layer)
   }
 }
 
 export default () => {
-  // layers.forEach(layer => layer.addEventListener('click', moveForwardListener))
-  // layerContainers.forEach(layerContainer => {
-  //   const selected = layerContainer.querySelector('.c-layer--selected')
-  //   selected.style.height = calculateLayerHeight(selected) + 'px'
-  //   layerContainer.style.height = calculateContainerHeight(selected) + 'px'
-  // })
+  $layers.on('click', moveForwardListener)
+  $layerContainers.each((index, container) => {
+    const $selected = $(container).find('.c-layer--selected')
+    $selected.css('height', calculateLayerHeight($selected))
+    $(container).css('height', calculateContainerHeight($selected))
+  })
 }

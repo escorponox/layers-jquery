@@ -14,38 +14,3 @@ export const calculateLayerHeight = $layer => {
 export const calculateContainerHeight = $layer => $layer.siblings().toArray()
   .reduce((total, curr) => curr.querySelector('.c-layer__header').offsetHeight + total
     , calculateLayerHeight($layer))
-
-export const slide = ($layer, endHeight, duration, down = false) => new Promise((resolve, reject) => {
-  let start = null
-  const initHeight = $layer.css('height')
-
-  function step (timestamp) {
-    if (!start) start = timestamp
-    const progress = timestamp - start
-    const newHeight = down
-      ? easingDown(progress, initHeight, endHeight - initHeight, duration)
-      : easing(progress, initHeight, endHeight - initHeight, duration)
-    $layer.css('height', newHeight)
-    if (progress < duration) {
-      window.requestAnimationFrame(step)
-    } else {
-      endAnimation()
-    }
-  }
-
-  // easeOutCubic - George McGinley Smith - https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
-  function easing (t, b, c, d) {
-    return c * ((t = t / d - 1) * t * t + 1) + b
-  }
-
-  function easingDown (t, b, c, d) {
-    return c * (t /= d) * t * t + b
-  }
-
-  function endAnimation () {
-    $layer.css('height', endHeight)
-    resolve($layer)
-  }
-
-  window.requestAnimationFrame(step)
-})

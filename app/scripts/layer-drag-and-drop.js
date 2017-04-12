@@ -64,7 +64,6 @@ const dropLayer = () => {
       duration: 500,
       start: function () {
         $(this).addClass('c-layer--selected')
-        $(this).removeClass('c-layer--visited')
       }
     })
 
